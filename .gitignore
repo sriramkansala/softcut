@@ -1,0 +1,9 @@
+.build/
+dist/
+out/
+.swiftpm/
+*.xcodeproj
+.DS_Store
+.claude/
+# Built by scripts/mockups/build_mockups.py
+/Mockups/

@@ -1,0 +1,8 @@
+{
+ "cssVars": null,
+ "css": {
+  "html.transitioning *, html.transitioning *::before, html.transitioning *::after": {
+   "transition": "border-radius 180ms ease-in-out, background-color 180ms ease-in-out, color 180ms ease-in-out, border-color 180ms ease-in-out, fill 180ms ease-in-out, stroke 180ms ease-in-out !important"
+  }
+ }
+}

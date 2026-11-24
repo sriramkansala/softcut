@@ -1,0 +1,15 @@
+{
+ "cssVars": {
+  "light": {
+   "info": "#3B82F6",
+   "success": "#22C55E",
+   "warning": "#F59E0B"
+  },
+  "dark": {
+   "info": "#93C5FD",
+   "success": "#86EFAC",
+   "warning": "#FCD34D"
+  }
+ },
+ "css": null
+}

@@ -1,0 +1,13 @@
+{
+ "cssVars": {
+  "light": {
+   "checker-a": "#bbbbbb",
+   "checker-b": "#ffffff"
+  },
+  "dark": {
+   "checker-a": "#1f1f1f",
+   "checker-b": "#2a2a2a"
+  }
+ },
+ "css": null
+}
