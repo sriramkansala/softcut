@@ -4,20 +4,20 @@ import PackageDescription
 let swift5: [SwiftSetting] = [.swiftLanguageMode(.v5)]
 
 let package = Package(
-    name: "Glide",
+    name: "Softcut",
     platforms: [.macOS(.v15)],
     products: [
-        .executable(name: "Glide", targets: ["Glide"]),
-        .executable(name: "glide-cli", targets: ["GlideCLI"]),
-        .library(name: "GlideCore", targets: ["GlideCore"]),
-        .library(name: "GlideUI", targets: ["GlideUI"]),
+        .executable(name: "Softcut", targets: ["Softcut"]),
+        .executable(name: "softcut-cli", targets: ["SoftcutCLI"]),
+        .library(name: "SoftcutCore", targets: ["SoftcutCore"]),
+        .library(name: "SoftcutUI", targets: ["SoftcutUI"]),
     ],
     targets: [
-        .target(name: "GlideCore", swiftSettings: swift5),
-        .target(name: "GlideUI", dependencies: ["GlideCore"], swiftSettings: swift5),
-        .executableTarget(name: "Glide", dependencies: ["GlideCore", "GlideUI"], swiftSettings: swift5),
-        .executableTarget(name: "GlideCLI", dependencies: ["GlideCore", "GlideUI"], path: "Sources/glide-cli", swiftSettings: swift5),
-        .testTarget(name: "GlideCoreTests", dependencies: ["GlideCore"], resources: [.copy("Fixtures")], swiftSettings: swift5),
-        .testTarget(name: "GlideUITests", dependencies: ["GlideUI", "GlideCore"], swiftSettings: swift5),
+        .target(name: "SoftcutCore", swiftSettings: swift5),
+        .target(name: "SoftcutUI", dependencies: ["SoftcutCore"], swiftSettings: swift5),
+        .executableTarget(name: "Softcut", dependencies: ["SoftcutCore", "SoftcutUI"], swiftSettings: swift5),
+        .executableTarget(name: "SoftcutCLI", dependencies: ["SoftcutCore", "SoftcutUI"], path: "Sources/softcut-cli", swiftSettings: swift5),
+        .testTarget(name: "SoftcutCoreTests", dependencies: ["SoftcutCore"], resources: [.copy("Fixtures")], swiftSettings: swift5),
+        .testTarget(name: "SoftcutUITests", dependencies: ["SoftcutUI", "SoftcutCore"], swiftSettings: swift5),
     ]
 )

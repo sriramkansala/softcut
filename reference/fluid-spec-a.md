@@ -78,7 +78,7 @@ What the components use instead:
 - **Popovers** are `surface-N` with `shadow-N`.
 - **Radius** comes from the shape context: 8 for items and buttons, 12 for containers.
 
-If Glide needs shadcn names, the faithful aliases are:
+If Softcut needs shadcn names, the faithful aliases are:
 
 | Alias | Maps to |
 |---|---|

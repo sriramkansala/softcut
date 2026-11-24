@@ -1,10 +1,10 @@
-"""Builds Glide's device mockups in Blender, from each device's published dimensions and reference photographs.
+"""Builds Softcut's device mockups in Blender, from each device's published dimensions and reference photographs.
 
     /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup \
         --python scripts/mockups/build_mockups.py -- Mockups [device ids...]
 
 For every device this writes <out>/<id>/model.blend (the editable source: named parts, each motion kept as an action,
-a studio and a camera, so it renders in Cycles as it stands), <out>/<id>/model.usdz (what Glide draws) and
+a studio and a camera, so it renders in Cycles as it stands), <out>/<id>/model.usdz (what Softcut draws) and
 <out>/<id>/device.json (where the screen is, and every motion baked at 60 frames a second). <out>/index.json lists the
 devices and <out>/studio.hdr is the lighting they are all shown in.
 
@@ -545,7 +545,7 @@ def build_macbook(spec, rig, shared):
             grilles.plate(rounded(grille_w, grille_h, 0, (cx, well_y)), base_h + 0.01 * MM, grille_mat)
         grilles.object(rig)
 
-    # An invisible sheet over the deck, on which Glide lays the screen's light as it falls on the metal. Its UVs run from
+    # An invisible sheet over the deck, on which Softcut lays the screen's light as it falls on the metal. Its UVs run from
     # the hinge (v = 0) to the front edge (v = 1).
     glow = Builder("ScreenGlow")
     glow_back, glow_front = depth / 2 - 3.5 * MM, -depth / 2 + edge
@@ -951,7 +951,7 @@ def build_studio(path):
 
 
 def add_studio_to_scene(spec, studio_path, bounds):
-    """So that the .blend renders as it stands: the same light Glide uses, and a camera on the finished pose."""
+    """So that the .blend renders as it stands: the same light Softcut uses, and a camera on the finished pose."""
     scene = bpy.context.scene
     scene.render.engine = 'CYCLES'
     scene.cycles.samples = 128
@@ -988,7 +988,7 @@ def add_studio_to_scene(spec, studio_path, bounds):
         glow_sheet.hide_render = True
         glow_sheet.hide_viewport = True
 
-    # In Glide the screen shows the video; here it glows with a plain gradient.
+    # In Softcut the screen shows the video; here it glows with a plain gradient.
     surface = bpy.data.materials.get("ScreenSurface")
     tree = surface.node_tree
     principled = tree.nodes["Principled BSDF"]
@@ -1207,7 +1207,7 @@ def key_motion(motion, rig, lid, rest, lid_rest, width, family):
 
 
 def bake_motion(motion, rest, lid_rest, width, family):
-    """Every channel 60 times a second, as Glide plays it back. It loops from the end of the arrival."""
+    """Every channel 60 times a second, as Softcut plays it back. It loops from the end of the arrival."""
     duration = motion["settle"] + DRIFT_SECONDS
     positions, rotations, lids, display = [], [], [], []
     for index in range(round(duration * FPS) + 1):
@@ -1265,7 +1265,7 @@ def build_device(spec, out_root, keyboard_path, lens_path, studio_path):
     corners = [matrix @ Vector((x0, y0, z)), matrix @ Vector((x1, y0, z)), matrix @ Vector((x0, y1, z)), matrix @ Vector((x1, y1, z))]
     bounds = world_bounds(rig)
 
-    # Export with the rig unposed and the lid closed: Glide sets both from the baked motion.
+    # Export with the rig unposed and the lid closed: Softcut sets both from the baked motion.
     rig.location = (0, 0, 0)
     rig.rotation_euler = (0, 0, 0)
     if lid:
@@ -1289,7 +1289,7 @@ def build_device(spec, out_root, keyboard_path, lens_path, studio_path):
             lid_action.use_fake_user = True
         baked.append(bake_motion(motion, rest, lid_rest, width, family))
 
-    # Leave the file at rest, with each motion kept as a named action, in the same light Glide uses.
+    # Leave the file at rest, with each motion kept as a named action, in the same light Softcut uses.
     set_rest(rig, lid, rest, lid_rest)
     add_studio_to_scene(spec, studio_path, bounds)
     bpy.context.preferences.filepaths.save_version = 0

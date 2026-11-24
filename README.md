@@ -40,7 +40,7 @@ Without Accessibility, typing still zooms, but the camera aims at the mouse inst
 Input Monitoring the recording works but nothing zooms on typing.
 
 When you stop, the recording opens in the editor, already given Softcut's automatic edit. Nothing is exported until
-you choose Export. Raw recordings stay in `~/Movies/Glide/Recordings/`, and your edits are saved beside each one as
+you choose Export. Raw recordings stay in `~/Movies/Softcut/Recordings/`, and your edits are saved beside each one as
 `edit.json`, so you can close the editor and come back. **Recordings…** in the menu lists everything you have recorded.
 
 ## The editor
@@ -104,7 +104,7 @@ video's light. To rebuild them:
 
 ```bash
 /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python scripts/mockups/build_mockups.py -- Mockups
-.build/debug/glide-cli mockup-thumbnails
+.build/debug/softcut-cli mockup-thumbnails
 ```
 
 The aspect ratio's Auto means 16:10 for a MacBook and square for an iPhone.
@@ -144,7 +144,7 @@ from Screen Studio's own projects for the same recordings, and a test checks Sof
   comes up. Inside a zoom the camera holds still while the mouse stays near the middle of the picture, sets off for
   the next group of clicks just in time to be there for the first of them, and follows the mouse to where it comes to
   rest if it strays far without clicking. Where it points and when it moves were matched against Screen Studio's own
-  camera, recovered frame by frame from its export of the same recording (`glide-cli trace-camera`).
+  camera, recovered frame by frame from its export of the same recording (`softcut-cli trace-camera`).
 - The cursor glides. Hand movement is split into rests and movements: while the mouse rests the cursor holds
   perfectly still, and each movement from one stop to the next becomes one clean curve along the route the mouse took,
   wobbles and overshoot-and-correct hooks straightened out, with speed that rises and falls smoothly. It starts when
@@ -154,37 +154,37 @@ from Screen Studio's own projects for the same recordings, and a test checks Sof
   picture's width.
 
 When you stop recording, Softcut shows the finished video straight away, already edited, playing in a window with two
-buttons: **Save video** (to `~/Movies/Glide/Exports/` unless you choose somewhere else) and **Edit**, which opens the
+buttons: **Save video** (to `~/Movies/Softcut/Exports/` unless you choose somewhere else) and **Edit**, which opens the
 editor if you want to change anything.
 
 Stretches of typing play three times faster, so the video does not wait for every key. This needs Input Monitoring
 (only the moments keys are pressed are recorded, never which keys), and is skipped when the microphone was on, so
 narration is never sped up. In the editor each sped-up stretch is its own clip, with its speed in the Clip pane.
 
-To check an edit without watching it, `glide-cli check FOLDER` reports how many clicks are in view when they happen,
+To check an edit without watching it, `softcut-cli check FOLDER` reports how many clicks are in view when they happen,
 how often the camera moves, whether it ever wobbles, and how far the cursor lands from each click.
-`glide-cli import-screenstudio PROJECT.screenstudio FOLDER` turns a Screen Studio recording into a Softcut one (the
+`softcut-cli import-screenstudio PROJECT.screenstudio FOLDER` turns a Screen Studio recording into a Softcut one (the
 project is only read), so both apps' automatic edits of the same recording can be compared side by side.
-`glide-cli trace-camera EXPORT.mp4 FOLDER` recovers another app's camera from its exported video of that recording,
-and `glide-cli compare-trace TRACE.csv FOLDER` scores Softcut's camera against it.
+`softcut-cli trace-camera EXPORT.mp4 FOLDER` recovers another app's camera from its exported video of that recording,
+and `softcut-cli compare-trace TRACE.csv FOLDER` scores Softcut's camera against it.
 
 ## Command line
 
 ```bash
 swift build
-.build/debug/glide-cli demo out/demo                 # synthetic recording, no permission needed
-.build/debug/glide-cli edit "path/to/recording"      # re-render a saved recording
-.build/debug/glide-cli record --seconds 10 --mic     # record from the terminal
-.build/debug/glide-cli frames video.mp4 out/frames 1.0 3.5   # save stills to inspect a render
-.build/debug/glide-cli snapshot out/demo out/editor.png --tab zoom --time 4   # draw the editor to a picture
-.build/debug/glide-cli check out/demo                # measure how watchable the edit is
-.build/debug/glide-cli stills out/demo out/stills 1.5 4.0   # render single frames of the edit
-.build/debug/glide-cli import-screenstudio "My Recording.screenstudio" out/imported
-.build/debug/glide-cli fluid-gallery out/gallery.png   # every interface component on one page
-.build/debug/glide-cli library-snapshot out out/library.png   # draw the recordings window
-.build/debug/glide-cli export out/demo out/video.mp4   # export the saved edit, as the app's Export button does
-.build/debug/glide-cli mockup-still macbook-air-15 idle 0 out/device.png   # one frame of a device on its own
-.build/debug/glide-cli mockup-thumbnails               # draw the pictures in the Mockups tab
+.build/debug/softcut-cli demo out/demo                 # synthetic recording, no permission needed
+.build/debug/softcut-cli edit "path/to/recording"      # re-render a saved recording
+.build/debug/softcut-cli record --seconds 10 --mic     # record from the terminal
+.build/debug/softcut-cli frames video.mp4 out/frames 1.0 3.5   # save stills to inspect a render
+.build/debug/softcut-cli snapshot out/demo out/editor.png --tab zoom --time 4   # draw the editor to a picture
+.build/debug/softcut-cli check out/demo                # measure how watchable the edit is
+.build/debug/softcut-cli stills out/demo out/stills 1.5 4.0   # render single frames of the edit
+.build/debug/softcut-cli import-screenstudio "My Recording.screenstudio" out/imported
+.build/debug/softcut-cli fluid-gallery out/gallery.png   # every interface component on one page
+.build/debug/softcut-cli library-snapshot out out/library.png   # draw the recordings window
+.build/debug/softcut-cli export out/demo out/video.mp4   # export the saved edit, as the app's Export button does
+.build/debug/softcut-cli mockup-still macbook-air-15 idle 0 out/device.png   # one frame of a device on its own
+.build/debug/softcut-cli mockup-thumbnails               # draw the pictures in the Mockups tab
 ```
 
 To open the app straight on a recording: `open dist/Softcut.app --args --edit "path/to/recording"`.
@@ -196,11 +196,11 @@ Record with `--webcam` and `--typing` to turn those on. Edit options: `--zoom 2.
 
 | Stage | Where | What it does |
 | --- | --- | --- |
-| Capture | `Sources/GlideCore/Capture` | ScreenCaptureKit records the display without the cursor, plus optional system audio and microphone. The webcam goes to its own file. Mouse position (120 Hz), clicks, scrolls, cursor shapes, key-press times and the text caret are logged separately on the same clock. |
-| Edit | `Sources/GlideCore/Edit` | `AutoEditor` turns the input log into a plan: spring-smoothed cursor, zoom segments from click groups and typing bursts, a camera that follows the cursor (or the caret while typing) only near the edge of the view, and trimmed idle ends. |
-| Project | `Sources/GlideCore/Edit/EditProject.swift` | Everything a person can change (look, zooms, cuts, audio), with plain functions to add, move, trim, split and cut. It is saved as `edit.json` and read back, tolerating files from older or newer versions. |
-| Editor | `Sources/GlideUI` | The SwiftUI editor: `EditorModel` (undo, autosave, live preview), the inspector, the timeline, the recordings library. |
-| Render | `Sources/GlideCore/Render` | A custom `AVVideoCompositing` draws each frame with Core Image (background, shadow, cropped screen, cursor, ripples, webcam circle, rounded corners) and exports MP4. |
+| Capture | `Sources/SoftcutCore/Capture` | ScreenCaptureKit records the display without the cursor, plus optional system audio and microphone. The webcam goes to its own file. Mouse position (120 Hz), clicks, scrolls, cursor shapes, key-press times and the text caret are logged separately on the same clock. |
+| Edit | `Sources/SoftcutCore/Edit` | `AutoEditor` turns the input log into a plan: spring-smoothed cursor, zoom segments from click groups and typing bursts, a camera that follows the cursor (or the caret while typing) only near the edge of the view, and trimmed idle ends. |
+| Project | `Sources/SoftcutCore/Edit/EditProject.swift` | Everything a person can change (look, zooms, cuts, audio), with plain functions to add, move, trim, split and cut. It is saved as `edit.json` and read back, tolerating files from older or newer versions. |
+| Editor | `Sources/SoftcutUI` | The SwiftUI editor: `EditorModel` (undo, autosave, live preview), the inspector, the timeline, the recordings library. |
+| Render | `Sources/SoftcutCore/Render` | A custom `AVVideoCompositing` draws each frame with Core Image (background, shadow, cropped screen, cursor, ripples, webcam circle, rounded corners) and exports MP4. |
 
 A recording is a plain folder: `screen.mov`, `webcam.mov` (optional), `input.json`, `manifest.json`, `cursors/`.
 Times are seconds from the first screen frame; positions are normalized to the display. The manifest stores how far
@@ -210,7 +210,7 @@ the webcam's first frame is from the screen's, and the renderer uses that to lin
 
 Every control in Softcut is a SwiftUI port of [Fluid Functionalism](https://www.fluidfunctionalism.com), the
 React/shadcn component library by Micka Touillaud, used under its MIT license (`reference/fluid-registry/LICENSE`).
-The ports live in `Sources/GlideUI/Fluid`:
+The ports live in `Sources/SoftcutUI/Fluid`:
 
 | File | Components |
 | --- | --- |
@@ -234,8 +234,8 @@ choices (background, cursor style, camera layout, zoom style, blur type, export 
 Softcut themes Fluid's accent (its focus-ring color) to one brand purple, used for the Export button, switches and the chosen
 option.
 
-`glide-cli fluid-gallery out.png` draws all of them on one page. The library's measurements, colors and timings are
-written up in `reference/fluid-spec-a.md`, `-b.md` and `-c.md`. Glide uses the system font at Inter's weights (400,
+`softcut-cli fluid-gallery out.png` draws all of them on one page. The library's measurements, colors and timings are
+written up in `reference/fluid-spec-a.md`, `-b.md` and `-c.md`. Softcut uses the system font at Inter's weights (400,
 550, 700) rather than bundling Inter. The library's AI-chat pieces (chat message, composer, ask-user questions, queued
 stack, file thumbnail) and its mobile drawer have no place in a desktop screen recorder and are not ported.
 
@@ -279,4 +279,4 @@ record a voice-over, macOS asks for Speech Recognition or Microphone access.
 ## License
 
 MIT, see `LICENSE`. The interface is ported from Fluid Functionalism, © Micka Touillaud, also MIT
-(`reference/fluid-registry/LICENSE`). The code and bundle identifier still use the app's first name, Glide.
+(`reference/fluid-registry/LICENSE`).

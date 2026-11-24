@@ -5,13 +5,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 APP="dist/Softcut.app"
-BUNDLE_ID="app.glide.Glide"
+BUNDLE_ID="app.softcut.Softcut"
 
-swift build -c release --product Glide
+swift build -c release --product Softcut
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$(swift build -c release --show-bin-path)/Glide" "$APP/Contents/MacOS/Glide"
+cp "$(swift build -c release --show-bin-path)/Softcut" "$APP/Contents/MacOS/Softcut"
 
 # The 3D devices the Mockups tab offers. The .blend sources and the textures they were built from stay in the project;
 # the app only needs the exports, the studio light and the pictures in the tab.
@@ -29,7 +29,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundleIdentifier</key><string>${BUNDLE_ID}</string>
     <key>CFBundleName</key><string>Softcut</string>
     <key>CFBundleDisplayName</key><string>Softcut</string>
-    <key>CFBundleExecutable</key><string>Glide</string>
+    <key>CFBundleExecutable</key><string>Softcut</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>0.1.0</string>
     <key>CFBundleVersion</key><string>1</string>
@@ -47,7 +47,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-cat > dist/Glide.entitlements <<PLIST
+cat > dist/Softcut.entitlements <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -62,10 +62,10 @@ PLIST
 IDENTITY=$(security find-identity -v -p codesigning 2>/dev/null | grep "Apple Development" | head -1 | sed -E 's/.*"(.+)"/\1/' || true)
 if [ -n "${IDENTITY:-}" ]; then
     echo "Signing with: $IDENTITY"
-    codesign --force --options runtime --entitlements dist/Glide.entitlements --sign "$IDENTITY" "$APP"
+    codesign --force --options runtime --entitlements dist/Softcut.entitlements --sign "$IDENTITY" "$APP"
 else
     echo "No developer identity found; signing ad-hoc (Screen Recording permission resets after each rebuild)."
-    codesign --force --entitlements dist/Glide.entitlements --sign - "$APP"
+    codesign --force --entitlements dist/Softcut.entitlements --sign - "$APP"
 fi
 
 echo "Built $APP"
